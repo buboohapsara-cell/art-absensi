@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <title><%= title %> — Absensi ART</title>
+  <title><%= title %> — Absensi</title>
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
   <% if (currentUser) { %>
   <header class="topbar">
-    <div class="topbar-title">Absensi ART</div>
+    <div class="topbar-title">Absensi</div>
     <nav class="topbar-nav">
       <% if (currentUser.role === 'art') { %>
         <a href="/absen" class="<%= currentPath === '/absen' ? 'active' : '' %>">Absen</a>
@@ -21,7 +21,7 @@
       <% } %>
     </nav>
     <form action="/logout" method="POST" class="logout-form">
-      <span class="topbar-user"><%= currentUser.fullName %></span>
+      <span class="topbar-user"><%= currentUser.username %></span>
       <button type="submit" class="btn-sm">Keluar</button>
     </form>
   </header>
