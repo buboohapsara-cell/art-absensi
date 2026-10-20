@@ -65,7 +65,9 @@ async function getDailyReport(userId, startDate, endDate) {
       checkinTime,
       checkoutTime,
       checkinLocation: checkin ? checkin.location_name : null,
+      checkinDistanceMeters: checkin ? checkin.distance_meters : null,
       checkoutLocation: checkout ? checkout.location_name : null,
+      checkoutDistanceMeters: checkout ? checkout.distance_meters : null,
       durationMinutes,
       overtimeMinutes,
     });
@@ -73,6 +75,12 @@ async function getDailyReport(userId, startDate, endDate) {
 
   days.sort((a, b) => (a.date < b.date ? -1 : 1));
   return days;
+}
+
+function formatDistance(meters) {
+  if (meters == null) return null;
+  if (meters < 1000) return `${Math.round(meters)}m`;
+  return `${(meters / 1000).toFixed(1)}km`;
 }
 
 function formatMinutesAsHM(minutes) {
@@ -131,4 +139,5 @@ module.exports = {
   getWeeklyReport,
   getWeekRange,
   formatMinutesAsHM,
+  formatDistance,
 };
