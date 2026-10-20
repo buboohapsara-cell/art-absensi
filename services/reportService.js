@@ -33,6 +33,12 @@ function minutesSinceMidnight(hhmm) {
   return h * 60 + m;
 }
 
+function isWeekend(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dayOfWeek = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  return dayOfWeek === 0 || dayOfWeek === 6;
+}
+
 async function getDailyReport(userId, startDate, endDate) {
   const logs = await getLogsInRange(userId, startDate, endDate);
   const settings = await getWorkSettings();
@@ -54,14 +60,20 @@ async function getDailyReport(userId, startDate, endDate) {
 
     let durationMinutes = null;
     let overtimeMinutes = 0;
+    const weekend = isWeekend(date);
     if (checkin && checkout) {
       durationMinutes = Math.round((new Date(checkout.recorded_at) - new Date(checkin.recorded_at)) / 60000);
-      const checkoutMinutes = minutesSinceMidnight(checkoutTime);
-      overtimeMinutes = Math.max(0, checkoutMinutes - normalCheckoutMinutes);
+      if (weekend) {
+        overtimeMinutes = durationMinutes;
+      } else {
+        const checkoutMinutes = minutesSinceMidnight(checkoutTime);
+        overtimeMinutes = Math.max(0, checkoutMinutes - normalCheckoutMinutes);
+      }
     }
 
     days.push({
       date,
+      isWeekend: weekend,
       checkinTime,
       checkoutTime,
       checkinLocation: checkin ? checkin.location_name : null,

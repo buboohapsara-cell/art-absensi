@@ -43,7 +43,7 @@
           <% } %>
           <% report.days.forEach(function(day) { %>
             <tr>
-              <td data-label="Tanggal"><%= day.date %></td>
+              <td data-label="Tanggal"><%= day.date %><% if (day.isWeekend) { %> <span class="weekend-tag">Akhir Pekan</span><% } %></td>
               <td data-label="Checkin"><%= day.checkinTime || '-' %></td>
               <td data-label="Checkout"><%= day.checkoutTime || '-' %></td>
               <td data-label="Durasi"><%= day.durationMinutes != null ? Math.floor(day.durationMinutes/60) + 'j ' + (day.durationMinutes%60) + 'm' : '-' %></td>
