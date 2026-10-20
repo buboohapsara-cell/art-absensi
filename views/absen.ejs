@@ -1,26 +1,53 @@
 <div class="absen-page">
-  <h1>Absen Hari Ini</h1>
+  <div class="page-header">
+    <h1>Absen Hari Ini</h1>
+    <span class="today-date"><%= todayDate %></span>
+  </div>
+
+  <% if (worked) { %>
+    <div class="worked-duration">
+      <div class="duration-label"><%= worked.isLive ? 'Sedang Bekerja' : 'Total Jam Kerja' %></div>
+      <div class="duration-value" id="duration-value" data-live="<%= worked.isLive ? '1' : '0' %>" data-checkin="<%= worked.checkinIso %>">
+        <%= worked.formatted %>
+      </div>
+      <div class="duration-sub"><%= worked.isLive ? 'sejak checkin, berjalan otomatis' : 'checkin sampai checkout' %></div>
+    </div>
+  <% } %>
 
   <div class="status-card">
-    <div class="status-row">
-      <span class="status-label">Checkin</span>
-      <span class="status-value">
+    <div class="status-row <%= today.checkin ? 'is-done' : '' %>">
+      <span class="status-icon">
         <% if (today.checkin) { %>
-          <%= new Date(today.checkin.recorded_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' }) %>
-          — <%= today.checkin.location_name %>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"></polyline></svg>
         <% } else { %>
-          Belum absen
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>
+        <% } %>
+      </span>
+      <span class="status-body">
+        <span class="status-label">Checkin</span>
+        <% if (today.checkin) { %>
+          <span class="status-value"><%= new Date(today.checkin.recorded_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' }) %></span>
+          <span class="status-sub"><%= today.checkin.location_name %></span>
+        <% } else { %>
+          <span class="status-value is-muted">Belum absen</span>
         <% } %>
       </span>
     </div>
-    <div class="status-row">
-      <span class="status-label">Checkout</span>
-      <span class="status-value">
+    <div class="status-row <%= today.checkout ? 'is-done' : '' %>">
+      <span class="status-icon">
         <% if (today.checkout) { %>
-          <%= new Date(today.checkout.recorded_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' }) %>
-          — <%= today.checkout.location_name %>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"></polyline></svg>
         <% } else { %>
-          Belum absen
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>
+        <% } %>
+      </span>
+      <span class="status-body">
+        <span class="status-label">Checkout</span>
+        <% if (today.checkout) { %>
+          <span class="status-value"><%= new Date(today.checkout.recorded_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' }) %></span>
+          <span class="status-sub"><%= today.checkout.location_name %></span>
+        <% } else { %>
+          <span class="status-value is-muted">Belum absen</span>
         <% } %>
       </span>
     </div>
@@ -29,8 +56,8 @@
   <% if (locations.length === 0) { %>
     <p class="error-text">Majikan belum mengatur titik lokasi. Minta majikan buka halaman Titik Lokasi dulu.</p>
   <% } else { %>
+    <div class="section-label">Pilih Lokasi</div>
     <div class="location-picker">
-      <span class="hint-text">Pilih lokasi:</span>
       <% locations.forEach(function(loc, i) { %>
         <label class="location-option">
           <input type="radio" name="location" value="<%= loc.id %>" <%= i === 0 ? 'checked' : '' %> />

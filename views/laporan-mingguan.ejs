@@ -26,32 +26,34 @@
       </div>
     </div>
 
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Tanggal</th>
-          <th>Checkin</th>
-          <th>Checkout</th>
-          <th>Durasi</th>
-          <th>Lembur</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if (report.days.length === 0) { %>
-          <tr><td colspan="5" class="empty-row">Belum ada data absen minggu ini.</td></tr>
-        <% } %>
-        <% report.days.forEach(function(day) { %>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
           <tr>
-            <td><%= day.date %></td>
-            <td><%= day.checkinTime || '-' %></td>
-            <td><%= day.checkoutTime || '-' %></td>
-            <td><%= day.durationMinutes != null ? Math.floor(day.durationMinutes/60) + 'j ' + (day.durationMinutes%60) + 'm' : '-' %></td>
-            <td class="<%= day.overtimeMinutes > 0 ? 'overtime-cell' : '' %>">
-              <%= day.overtimeMinutes > 0 ? Math.floor(day.overtimeMinutes/60) + 'j ' + (day.overtimeMinutes%60) + 'm' : '-' %>
-            </td>
+            <th>Tanggal</th>
+            <th>Checkin</th>
+            <th>Checkout</th>
+            <th>Durasi</th>
+            <th>Lembur</th>
           </tr>
-        <% }); %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% if (report.days.length === 0) { %>
+            <tr><td colspan="5" class="empty-row">Belum ada data absen minggu ini.</td></tr>
+          <% } %>
+          <% report.days.forEach(function(day) { %>
+            <tr>
+              <td data-label="Tanggal"><%= day.date %></td>
+              <td data-label="Checkin"><%= day.checkinTime || '-' %></td>
+              <td data-label="Checkout"><%= day.checkoutTime || '-' %></td>
+              <td data-label="Durasi"><%= day.durationMinutes != null ? Math.floor(day.durationMinutes/60) + 'j ' + (day.durationMinutes%60) + 'm' : '-' %></td>
+              <td data-label="Lembur" class="<%= day.overtimeMinutes > 0 ? 'overtime-cell' : '' %>">
+                <%= day.overtimeMinutes > 0 ? Math.floor(day.overtimeMinutes/60) + 'j ' + (day.overtimeMinutes%60) + 'm' : '-' %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
   <% } %>
 </div>

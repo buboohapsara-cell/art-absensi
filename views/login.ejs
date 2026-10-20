@@ -2,24 +2,30 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   <title>Login — Absensi ART</title>
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
   <main class="login-page">
     <form class="login-card" method="POST" action="/login">
-      <h1>Absensi ART</h1>
+      <div class="login-brand">
+        <span class="login-brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </span>
+        <h1>Absensi ART</h1>
+        <p>Masuk untuk catat atau pantau jam kerja</p>
+      </div>
       <% if (error) { %>
         <p class="error-text"><%= error %></p>
       <% } %>
       <label>
         Username
-        <input type="text" name="username" required autofocus />
+        <input type="text" name="username" required autofocus autocomplete="username" />
       </label>
       <label>
         Password
-        <input type="password" name="password" required />
+        <input type="password" name="password" required autocomplete="current-password" />
       </label>
       <button type="submit">Masuk</button>
     </form>

@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   <title><%= title %> — Absensi ART</title>
   <link rel="stylesheet" href="/css/style.css" />
 </head>
@@ -12,17 +12,17 @@
     <div class="topbar-title">Absensi ART</div>
     <nav class="topbar-nav">
       <% if (currentUser.role === 'art') { %>
-        <a href="/absen">Absen</a>
+        <a href="/absen" class="<%= currentPath === '/absen' ? 'active' : '' %>">Absen</a>
       <% } else { %>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/laporan/mingguan">Laporan Mingguan</a>
-        <a href="/lokasi">Titik Lokasi</a>
-        <a href="/pengaturan/jam-kerja">Pengaturan</a>
+        <a href="/dashboard" class="<%= currentPath === '/dashboard' ? 'active' : '' %>">Dashboard</a>
+        <a href="/laporan/mingguan" class="<%= currentPath === '/laporan/mingguan' ? 'active' : '' %>">Laporan</a>
+        <a href="/lokasi" class="<%= currentPath === '/lokasi' ? 'active' : '' %>">Titik Lokasi</a>
+        <a href="/pengaturan/jam-kerja" class="<%= currentPath === '/pengaturan/jam-kerja' ? 'active' : '' %>">Pengaturan</a>
       <% } %>
     </nav>
     <form action="/logout" method="POST" class="logout-form">
       <span class="topbar-user"><%= currentUser.fullName %></span>
-      <button type="submit">Keluar</button>
+      <button type="submit" class="btn-sm">Keluar</button>
     </form>
   </header>
   <% } %>

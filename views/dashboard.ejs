@@ -11,35 +11,37 @@
     <p class="error-text"><%= dbError %></p>
   <% } %>
 
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th>Tanggal</th>
-        <th>Checkin</th>
-        <th>Lokasi Checkin</th>
-        <th>Checkout</th>
-        <th>Lokasi Checkout</th>
-        <th>Durasi Kerja</th>
-        <th>Lembur</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if (days.length === 0) { %>
-        <tr><td colspan="7" class="empty-row">Belum ada data absen di rentang ini.</td></tr>
-      <% } %>
-      <% days.forEach(function(day) { %>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
         <tr>
-          <td><%= day.date %></td>
-          <td><%= day.checkinTime || '-' %></td>
-          <td><%= day.checkinLocation || '-' %></td>
-          <td><%= day.checkoutTime || '-' %></td>
-          <td><%= day.checkoutLocation || '-' %></td>
-          <td><%= day.durationMinutes != null ? Math.floor(day.durationMinutes/60) + 'j ' + (day.durationMinutes%60) + 'm' : '-' %></td>
-          <td class="<%= day.overtimeMinutes > 0 ? 'overtime-cell' : '' %>">
-            <%= day.overtimeMinutes > 0 ? Math.floor(day.overtimeMinutes/60) + 'j ' + (day.overtimeMinutes%60) + 'm' : '-' %>
-          </td>
+          <th>Tanggal</th>
+          <th>Checkin</th>
+          <th>Lokasi Checkin</th>
+          <th>Checkout</th>
+          <th>Lokasi Checkout</th>
+          <th>Durasi Kerja</th>
+          <th>Lembur</th>
         </tr>
-      <% }); %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% if (days.length === 0) { %>
+          <tr><td colspan="7" class="empty-row">Belum ada data absen di rentang ini.</td></tr>
+        <% } %>
+        <% days.forEach(function(day) { %>
+          <tr>
+            <td data-label="Tanggal"><%= day.date %></td>
+            <td data-label="Checkin"><%= day.checkinTime || '-' %></td>
+            <td data-label="Lokasi Checkin"><%= day.checkinLocation || '-' %></td>
+            <td data-label="Checkout"><%= day.checkoutTime || '-' %></td>
+            <td data-label="Lokasi Checkout"><%= day.checkoutLocation || '-' %></td>
+            <td data-label="Durasi Kerja"><%= day.durationMinutes != null ? Math.floor(day.durationMinutes/60) + 'j ' + (day.durationMinutes%60) + 'm' : '-' %></td>
+            <td data-label="Lembur" class="<%= day.overtimeMinutes > 0 ? 'overtime-cell' : '' %>">
+              <%= day.overtimeMinutes > 0 ? Math.floor(day.overtimeMinutes/60) + 'j ' + (day.overtimeMinutes%60) + 'm' : '-' %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
 </div>
