@@ -37,10 +37,7 @@ CREATE TABLE IF NOT EXISTS attendance_logs (
   user_id INTEGER NOT NULL REFERENCES users(id),
   event_type TEXT NOT NULL CHECK (event_type IN ('checkin', 'checkout')),
   recorded_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  latitude DOUBLE PRECISION,
-  longitude DOUBLE PRECISION,
-  nearest_location_id INTEGER REFERENCES locations(id),
-  distance_meters DOUBLE PRECISION,
+  location_id INTEGER NOT NULL REFERENCES locations(id),
   created_at TIMESTAMPTZ DEFAULT now()
 );
 `;

@@ -4,40 +4,39 @@ function setMessage(text, isError) {
   el.className = 'absen-message' + (isError ? ' error-text' : ' success-text');
 }
 
-function submitAbsen(eventType) {
-  setMessage('Mengambil lokasi...', false);
+function getSelectedLocationId() {
+  const checked = document.querySelector('input[name="location"]:checked');
+  return checked ? checked.value : null;
+}
 
-  if (!navigator.geolocation) {
-    setMessage('Browser tidak mendukung lokasi GPS.', true);
+async function submitAbsen(eventType) {
+  const locationId = getSelectedLocationId();
+  if (!locationId) {
+    setMessage('Pilih lokasi dulu.', true);
     return;
   }
 
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const { latitude, longitude } = position.coords;
-      try {
-        const res = await fetch('/absen/' + eventType, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ latitude, longitude }),
-        });
-        const data = await res.json();
-        if (data.ok) {
-          setMessage('Berhasil ' + (eventType === 'checkin' ? 'checkin' : 'checkout') + '!', false);
-          setTimeout(() => window.location.reload(), 1000);
-        } else {
-          setMessage(data.message || 'Gagal absen.', true);
-        }
-      } catch (err) {
-        setMessage('Gagal mengirim absen. Cek koneksi internet.', true);
-      }
-    },
-    (err) => {
-      setMessage('Gagal ambil lokasi: ' + err.message + '. Pastikan izin lokasi diaktifkan.', true);
-    },
-    { enableHighAccuracy: true, timeout: 10000 }
-  );
+  setMessage('Mengirim absen...', false);
+
+  try {
+    const res = await fetch('/absen/' + eventType, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ locationId }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      setMessage('Berhasil ' + (eventType === 'checkin' ? 'checkin' : 'checkout') + '!', false);
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      setMessage(data.message || 'Gagal absen.', true);
+    }
+  } catch (err) {
+    setMessage('Gagal mengirim absen. Cek koneksi internet.', true);
+  }
 }
 
-document.getElementById('btn-checkin').addEventListener('click', () => submitAbsen('checkin'));
-document.getElementById('btn-checkout').addEventListener('click', () => submitAbsen('checkout'));
+const btnCheckin = document.getElementById('btn-checkin');
+const btnCheckout = document.getElementById('btn-checkout');
+if (btnCheckin) btnCheckin.addEventListener('click', () => submitAbsen('checkin'));
+if (btnCheckout) btnCheckout.addEventListener('click', () => submitAbsen('checkout'));

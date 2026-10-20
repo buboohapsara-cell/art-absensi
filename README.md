@@ -1,6 +1,6 @@
 # Absensi ART
 
-Sistem absensi web untuk 1 orang ART (Asisten Rumah Tangga) yang bisa dipantau majikan: checkin/checkout dengan lokasi GPS, dashboard harian, dan laporan mingguan (termasuk hitung jam lembur).
+Sistem absensi web untuk 1 orang ART (Asisten Rumah Tangga) yang bisa dipantau majikan: checkin/checkout dengan pilih lokasi (Sekolah/Rumah), dashboard harian, dan laporan mingguan (termasuk hitung jam lembur).
 
 ## Setup
 
@@ -24,11 +24,11 @@ Sistem absensi web untuk 1 orang ART (Asisten Rumah Tangga) yang bisa dipantau m
 
 ## Alur Pemakaian
 
-1. **Majikan** login → buka `/lokasi` untuk set titik Rumah & Sekolah Anak (klik di peta), lalu `/pengaturan/jam-kerja` untuk set jam pulang normal (dipakai hitung lembur).
-2. **ART** login → halaman `/absen`, tekan tombol Checkin saat mulai kerja dan Checkout saat pulang. Browser akan minta izin lokasi.
+1. **Majikan** login → buka `/lokasi` untuk daftarkan titik lokasi (misal "Sekolah Clarissa", "Rumah Golden") — titik di peta dipakai sebagai referensi, nama ini yang akan muncul sebagai pilihan ART saat absen. Lalu `/pengaturan/jam-kerja` untuk set jam pulang normal (dipakai hitung lembur).
+2. **ART** login → halaman `/absen`, pilih lokasi (radio button), lalu tekan tombol Checkin saat mulai kerja / Checkout saat pulang. Tidak pakai GPS — ART tinggal pilih dari daftar lokasi yang sudah di-set majikan.
 3. **Majikan** pantau di `/dashboard` (tabel harian) dan `/laporan/mingguan` (rekap total jam kerja & lembur per minggu, periode Senin–Minggu).
 
 ## Catatan
 
-- Lokasi GPS saat absen hanya direkam & ditampilkan (dibandingkan ke titik yang di-set), **tidak** memblokir absen jika ART berada di luar radius — sesuai keputusan agar ART tidak gagal absen karena akurasi GPS.
+- Lokasi absen dipilih manual oleh ART dari daftar yang di-set majikan (bukan GPS otomatis) — lebih simpel dan tidak gagal karena sinyal lokasi.
 - Deploy ke Vercel: `vercel.json` sudah disiapkan. Set `DATABASE_URL` dan `SESSION_SECRET` di environment variables Vercel.

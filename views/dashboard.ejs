@@ -31,9 +31,9 @@
         <tr>
           <td><%= day.date %></td>
           <td><%= day.checkinTime || '-' %></td>
-          <td><%= day.checkinLocation ? day.checkinLocation + ' (' + formatDistance(day.checkinDistanceMeters) + ')' : '-' %></td>
+          <td><%= day.checkinLocation || '-' %></td>
           <td><%= day.checkoutTime || '-' %></td>
-          <td><%= day.checkoutLocation ? day.checkoutLocation + ' (' + formatDistance(day.checkoutDistanceMeters) + ')' : '-' %></td>
+          <td><%= day.checkoutLocation || '-' %></td>
           <td><%= day.durationMinutes != null ? Math.floor(day.durationMinutes/60) + 'j ' + (day.durationMinutes%60) + 'm' : '-' %></td>
           <td class="<%= day.overtimeMinutes > 0 ? 'overtime-cell' : '' %>">
             <%= day.overtimeMinutes > 0 ? Math.floor(day.overtimeMinutes/60) + 'j ' + (day.overtimeMinutes%60) + 'm' : '-' %>

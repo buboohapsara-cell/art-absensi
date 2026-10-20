@@ -168,6 +168,38 @@ button:disabled {
   font-weight: 600;
 }
 
+.location-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.location-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px 20px;
+  width: 100%;
+  max-width: 320px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.location-option:has(input:checked) {
+  border-color: var(--color-primary);
+  background: #eff4ff;
+}
+
+.location-option input {
+  width: 18px;
+  height: 18px;
+}
+
 .absen-buttons {
   display: flex;
   flex-direction: column;

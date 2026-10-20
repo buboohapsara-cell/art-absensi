@@ -7,7 +7,6 @@ const expressLayouts = require('express-ejs-layouts');
 
 const { pool } = require('./config/db');
 const { requireLogin } = require('./middleware/auth');
-const { formatDistance } = require('./services/reportService');
 
 const authRoutes = require('./routes/auth');
 const absenRoutes = require('./routes/absen');
@@ -20,7 +19,6 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(expressLayouts);
 app.set('layout', 'layout/main');
-app.locals.formatDistance = formatDistance;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
