@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<div class="lokasi-page">
+  <h1>Titik Lokasi</h1>
+  <p class="hint-text">Klik di peta untuk memilih titik, lalu beri nama (contoh: "Rumah", "Sekolah Anak").</p>
+
+  <div id="map" class="map-box"></div>
+
+  <form class="lokasi-form" method="POST" action="/lokasi">
+    <input type="hidden" id="latitude" name="latitude" required />
+    <input type="hidden" id="longitude" name="longitude" required />
+    <label>Nama Lokasi <input type="text" name="name" placeholder="Rumah / Sekolah Anak" required /></label>
+    <span id="selected-coords" class="hint-text">Belum ada titik dipilih</span>
+    <button type="submit">Simpan Lokasi</button>
+  </form>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (locations.length === 0) { %>
+        <tr><td colspan="4" class="empty-row">Belum ada titik lokasi.</td></tr>
+      <% } %>
+      <% locations.forEach(function(loc) { %>
+        <tr>
+          <td><%= loc.name %></td>
+          <td><%= loc.latitude %></td>
+          <td><%= loc.longitude %></td>
+          <td>
+            <form method="POST" action="/lokasi/<%= loc.id %>/hapus" onsubmit="return confirm('Hapus lokasi ini?')">
+              <button type="submit" class="btn-danger">Hapus</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const map = L.map('map').setView([-6.9667, 110.4167], 13); // default: Semarang
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+  }).addTo(map);
+
+  let marker = null;
+  map.on('click', (e) => {
+    const { lat, lng } = e.latlng;
+    document.getElementById('latitude').value = lat;
+    document.getElementById('longitude').value = lng;
+    document.getElementById('selected-coords').textContent = 'Titik dipilih: ' + lat.toFixed(6) + ', ' + lng.toFixed(6);
+    if (marker) marker.remove();
+    marker = L.marker([lat, lng]).addTo(map);
+  });
+</script>

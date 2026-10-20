@@ -1,0 +1,35 @@
+<div class="absen-page">
+  <h1>Absen Hari Ini</h1>
+
+  <div class="status-card">
+    <div class="status-row">
+      <span class="status-label">Checkin</span>
+      <span class="status-value">
+        <% if (today.checkin) { %>
+          <%= new Date(today.checkin.recorded_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' }) %>
+        <% } else { %>
+          Belum absen
+        <% } %>
+      </span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">Checkout</span>
+      <span class="status-value">
+        <% if (today.checkout) { %>
+          <%= new Date(today.checkout.recorded_at).toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' }) %>
+        <% } else { %>
+          Belum absen
+        <% } %>
+      </span>
+    </div>
+  </div>
+
+  <p id="absen-message" class="absen-message"></p>
+
+  <div class="absen-buttons">
+    <button id="btn-checkin" class="btn-checkin" <%= today.checkin ? 'disabled' : '' %>>Checkin Masuk Kerja</button>
+    <button id="btn-checkout" class="btn-checkout" <%= (!today.checkin || today.checkout) ? 'disabled' : '' %>>Checkout Pulang</button>
+  </div>
+</div>
+
+<script src="/js/absen.js"></script>

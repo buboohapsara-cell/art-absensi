@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Absensi ART</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <main class="login-page">
+    <form class="login-card" method="POST" action="/login">
+      <h1>Absensi ART</h1>
+      <% if (error) { %>
+        <p class="error-text"><%= error %></p>
+      <% } %>
+      <label>
+        Username
+        <input type="text" name="username" required autofocus />
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" required />
+      </label>
+      <button type="submit">Masuk</button>
+    </form>
+  </main>
+</body>
+</html>

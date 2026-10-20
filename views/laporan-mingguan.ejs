@@ -1,0 +1,57 @@
+<div class="laporan-page">
+  <h1>Laporan Mingguan</h1>
+
+  <form class="filter-form" method="GET" action="/laporan/mingguan">
+    <label>Pilih tanggal dalam minggu <input type="date" name="minggu" value="<%= report ? report.weekStart : '' %>" /></label>
+    <button type="submit">Tampilkan</button>
+  </form>
+
+  <% if (typeof dbError !== 'undefined' && dbError) { %>
+    <p class="error-text"><%= dbError %></p>
+  <% } else { %>
+    <p class="week-range">Periode: <strong><%= report.weekStart %></strong> s.d. <strong><%= report.weekEnd %></strong></p>
+
+    <div class="summary-cards">
+      <div class="summary-card">
+        <span class="summary-label">Hari Kerja</span>
+        <span class="summary-value"><%= report.totalDaysWorked %> hari</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Total Jam Kerja</span>
+        <span class="summary-value"><%= report.totalWorkFormatted %></span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Total Lembur</span>
+        <span class="summary-value"><%= report.totalOvertimeFormatted %></span>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>Checkin</th>
+          <th>Checkout</th>
+          <th>Durasi</th>
+          <th>Lembur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (report.days.length === 0) { %>
+          <tr><td colspan="5" class="empty-row">Belum ada data absen minggu ini.</td></tr>
+        <% } %>
+        <% report.days.forEach(function(day) { %>
+          <tr>
+            <td><%= day.date %></td>
+            <td><%= day.checkinTime || '-' %></td>
+            <td><%= day.checkoutTime || '-' %></td>
+            <td><%= day.durationMinutes != null ? Math.floor(day.durationMinutes/60) + 'j ' + (day.durationMinutes%60) + 'm' : '-' %></td>
+            <td class="<%= day.overtimeMinutes > 0 ? 'overtime-cell' : '' %>">
+              <%= day.overtimeMinutes > 0 ? Math.floor(day.overtimeMinutes/60) + 'j ' + (day.overtimeMinutes%60) + 'm' : '-' %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
