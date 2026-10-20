@@ -29,6 +29,8 @@ CREATE TABLE IF NOT EXISTS locations (
 CREATE TABLE IF NOT EXISTS work_settings (
   id SERIAL PRIMARY KEY,
   normal_checkout_time TIME NOT NULL DEFAULT '17:00',
+  weekly_salary NUMERIC NOT NULL DEFAULT 0,
+  overtime_rate_per_hour NUMERIC NOT NULL DEFAULT 0,
   updated_at TIMESTAMPTZ DEFAULT now()
 );
 

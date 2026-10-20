@@ -11,6 +11,12 @@
   <% } else { %>
     <p class="week-range">Periode: <strong><%= report.weekStart %></strong> s.d. <strong><%= report.weekEnd %></strong></p>
 
+    <div class="worked-duration">
+      <div class="duration-label">Estimasi Gaji Minggu Ini</div>
+      <div class="duration-value"><%= report.totalPayFormatted %></div>
+      <div class="duration-sub">Gaji normal <%= report.weeklySalaryFormatted %> + Lembur <%= report.overtimePayFormatted %></div>
+    </div>
+
     <div class="summary-cards">
       <div class="summary-card">
         <span class="summary-label">Hari Kerja</span>

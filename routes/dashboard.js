@@ -50,7 +50,11 @@ router.get('/pengaturan/jam-kerja', requireRole('majikan'), async (req, res) => 
 });
 
 router.post('/pengaturan/jam-kerja', requireRole('majikan'), async (req, res) => {
-  await updateWorkSettings(req.body.normalCheckoutTime);
+  await updateWorkSettings({
+    normalCheckoutTime: req.body.normalCheckoutTime,
+    weeklySalary: Number(req.body.weeklySalary) || 0,
+    overtimeRatePerHour: Number(req.body.overtimeRatePerHour) || 0,
+  });
   const settings = await getWorkSettings();
   res.render('pengaturan', { title: 'Pengaturan Jam Kerja', settings, saved: true });
 });

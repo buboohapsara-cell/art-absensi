@@ -6,12 +6,13 @@ async function getWorkSettings() {
   return rows[0];
 }
 
-async function updateWorkSettings(normalCheckoutTime) {
+async function updateWorkSettings({ normalCheckoutTime, weeklySalary, overtimeRatePerHour }) {
   const { rows } = await pool.query(
-    `UPDATE work_settings SET normal_checkout_time = $1, updated_at = now()
+    `UPDATE work_settings
+     SET normal_checkout_time = $1, weekly_salary = $2, overtime_rate_per_hour = $3, updated_at = now()
      WHERE id = (SELECT id FROM work_settings ORDER BY id ASC LIMIT 1)
      RETURNING *`,
-    [normalCheckoutTime]
+    [normalCheckoutTime, weeklySalary, overtimeRatePerHour]
   );
   return rows[0];
 }
@@ -95,6 +96,10 @@ function formatMinutesAsHM(minutes) {
   return `${h}j ${m}m`;
 }
 
+function formatRupiah(amount) {
+  return 'Rp' + Math.round(amount).toLocaleString('id-ID');
+}
+
 function getWeekRange(referenceDate) {
   const ref = new Date(referenceDate);
   const dayOfWeek = ref.getDay(); // 0 = Minggu
@@ -111,6 +116,7 @@ function getWeekRange(referenceDate) {
 async function getWeeklyReport(userId, referenceDate) {
   const { start, end } = getWeekRange(referenceDate || new Date());
   const days = await getDailyReport(userId, start, end);
+  const settings = await getWorkSettings();
 
   let totalWorkMinutes = 0;
   let totalOvertimeMinutes = 0;
@@ -124,6 +130,11 @@ async function getWeeklyReport(userId, referenceDate) {
     totalOvertimeMinutes += day.overtimeMinutes;
   }
 
+  const weeklySalary = Number(settings.weekly_salary);
+  const overtimeRatePerHour = Number(settings.overtime_rate_per_hour);
+  const overtimePay = (totalOvertimeMinutes / 60) * overtimeRatePerHour;
+  const totalPay = weeklySalary + overtimePay;
+
   return {
     weekStart: start,
     weekEnd: end,
@@ -133,6 +144,13 @@ async function getWeeklyReport(userId, referenceDate) {
     totalOvertimeMinutes,
     totalWorkFormatted: formatMinutesAsHM(totalWorkMinutes),
     totalOvertimeFormatted: formatMinutesAsHM(totalOvertimeMinutes),
+    weeklySalary,
+    overtimeRatePerHour,
+    overtimePay,
+    totalPay,
+    weeklySalaryFormatted: formatRupiah(weeklySalary),
+    overtimePayFormatted: formatRupiah(overtimePay),
+    totalPayFormatted: formatRupiah(totalPay),
   };
 }
 
@@ -143,4 +161,5 @@ module.exports = {
   getWeeklyReport,
   getWeekRange,
   formatMinutesAsHM,
+  formatRupiah,
 };

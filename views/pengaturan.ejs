@@ -1,5 +1,5 @@
 <div class="pengaturan-page">
-  <h1>Pengaturan Jam Kerja</h1>
+  <h1>Pengaturan</h1>
 
   <% if (saved) { %>
     <p class="success-text">Pengaturan berhasil disimpan.</p>
@@ -10,7 +10,15 @@
       Jam pulang normal
       <input type="time" name="normalCheckoutTime" value="<%= settings.normal_checkout_time.slice(0,5) %>" required />
     </label>
+    <label>
+      Gaji normal mingguan (Rp)
+      <input type="number" name="weeklySalary" min="0" step="1000" value="<%= Math.round(settings.weekly_salary) %>" required />
+    </label>
+    <label>
+      Lembur per jam (Rp)
+      <input type="number" name="overtimeRatePerHour" min="0" step="500" value="<%= Math.round(settings.overtime_rate_per_hour) %>" required />
+    </label>
     <button type="submit">Simpan</button>
   </form>
-  <p class="hint-text">Jika ART checkout setelah jam ini, selisihnya akan dihitung sebagai jam lembur.</p>
+  <p class="hint-text">Jam pulang normal: jika ART checkout setelah jam ini (Senin&ndash;Jumat), selisihnya dihitung lembur. Sabtu/Minggu otomatis lembur penuh. Estimasi gaji mingguan = gaji normal + (total jam lembur &times; tarif lembur per jam), ditampilkan di Laporan Mingguan.</p>
 </div>
